@@ -14,7 +14,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_settings2);
+        this.setContentView(R.layout.activity_settings);
 
         // TODO (2) Set setDisplayHomeAsUpEnabled to true on the support ActionBar
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
