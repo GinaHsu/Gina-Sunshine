@@ -18,8 +18,9 @@ package com.example.android.sunshine.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-import com.example.android.sunshine.data.WeatherContract.WeatherEntry;
+//import com.example.android.sunshine.data.WeatherContract.WeatherEntry;
 
 /**
  * Manages a local database for weather data.
@@ -65,27 +66,27 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
          */
         final String SQL_CREATE_WEATHER_TABLE =
 
-                "CREATE TABLE " + WeatherEntry.TABLE_NAME + " (" +
+                "CREATE TABLE " + WeatherContract.WeatherEntry.TABLE_NAME + " (" +
 
                 /*
                  * WeatherEntry did not explicitly declare a column called "_ID". However,
                  * WeatherEntry implements the interface, "BaseColumns", which does have a field
                  * named "_ID". We use that here to designate our table's primary key.
                  */
-                WeatherEntry._ID               + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        WeatherContract.WeatherEntry._ID               + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 
-                WeatherEntry.COLUMN_DATE       + " INTEGER NOT NULL, "                 +
+                        WeatherContract.WeatherEntry.COLUMN_DATE       + " INTEGER NOT NULL, "                 +
 
-                WeatherEntry.COLUMN_WEATHER_ID + " INTEGER NOT NULL, "                 +
+                        WeatherContract.WeatherEntry.COLUMN_WEATHER_ID + " INTEGER NOT NULL, "                 +
 
-                WeatherEntry.COLUMN_MIN_TEMP   + " REAL NOT NULL, "                    +
-                WeatherEntry.COLUMN_MAX_TEMP   + " REAL NOT NULL, "                    +
+                        WeatherContract.WeatherEntry.COLUMN_MIN_TEMP   + " REAL NOT NULL, "                    +
+                        WeatherContract.WeatherEntry.COLUMN_MAX_TEMP   + " REAL NOT NULL, "                    +
 
-                WeatherEntry.COLUMN_HUMIDITY   + " REAL NOT NULL, "                    +
-                WeatherEntry.COLUMN_PRESSURE   + " REAL NOT NULL, "                    +
+                        WeatherContract.WeatherEntry.COLUMN_HUMIDITY   + " REAL NOT NULL, "                    +
+                        WeatherContract.WeatherEntry.COLUMN_PRESSURE   + " REAL NOT NULL, "                    +
 
-                WeatherEntry.COLUMN_WIND_SPEED + " REAL NOT NULL, "                    +
-                WeatherEntry.COLUMN_DEGREES    + " REAL NOT NULL, "                    +
+                        WeatherContract.WeatherEntry.COLUMN_WIND_SPEED + " REAL NOT NULL, "                    +
+                        WeatherContract.WeatherEntry.COLUMN_DEGREES    + " Real, "                    +
 
 //              TODO (1) Add a UNIQUE constraint on the date column to replace on conflict
                 /*
@@ -94,7 +95,9 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
                  * SQLite that if we have a weather entry for a certain date and we attempt to
                  * insert another weather entry with that date, we replace the old weather entry.
                  */
-                " UNIQUE (" + WeatherEntry.COLUMN_DATE + ") ON CONFLICT REPLACE);";
+                " UNIQUE (" + WeatherContract.WeatherEntry.COLUMN_DATE + ") ON CONFLICT REPLACE);";
+
+        Log.d("WeatherDbHelper.java", SQL_CREATE_WEATHER_TABLE);
 
         /*
          * After we've spelled out our SQLite table creation statement above, we actually execute
@@ -117,7 +120,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WeatherEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WeatherContract.WeatherEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

@@ -17,11 +17,8 @@ package com.example.android.sunshine.sync;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import com.example.android.sunshine.data.WeatherContract;
 
 // COMPLETED (9) Create a class called SunshineSyncUtils
 public class SunshineSyncUtils {

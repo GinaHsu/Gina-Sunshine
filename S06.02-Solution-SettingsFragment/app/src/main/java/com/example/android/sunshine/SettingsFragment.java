@@ -51,6 +51,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
         // COMPLETED (9) Set the preference summary on each preference that isn't a CheckBoxPreference
         SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
         PreferenceScreen prefScreen = getPreferenceScreen();
+
         int count = prefScreen.getPreferenceCount();
         for (int i = 0; i < count; i++) {
             Preference p = prefScreen.getPreference(i);

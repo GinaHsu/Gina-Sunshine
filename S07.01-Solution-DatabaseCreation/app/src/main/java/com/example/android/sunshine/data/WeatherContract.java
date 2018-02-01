@@ -31,7 +31,7 @@ public class WeatherContract {
 
 //      COMPLETED (2) Create a public static final String call TABLE_NAME with the value "weather"
 
-        /* Used internally as the name of our weather table. */
+    /* Used internally as the name of our weather table. */
         public static final String TABLE_NAME = "weather";
 
 //      COMPLETED (3) Create a public static final String call COLUMN_DATE with the value "date"
@@ -54,7 +54,6 @@ public class WeatherContract {
         public static final String COLUMN_DATE = "date";
 
 //      COMPLETED (4) Create a public static final String call COLUMN_WEATHER_ID with the value "weather_id"
-        /* Weather ID as returned by API, used to identify the icon to be used */
         public static final String COLUMN_WEATHER_ID = "weather_id";
 
 //      COMPLETED (5) Create a public static final String call COLUMN_MIN_TEMP with the value "min"
