@@ -20,11 +20,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -44,7 +45,8 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity implements
         ForecastAdapter.ForecastAdapterOnClickHandler,
         // TODO (3) Implement OnSharedPreferenceChangeListener on MainActivity
-        LoaderCallbacks<String[]>, SharedPreferences.OnSharedPreferenceChangeListener {
+        LoaderCallbacks<String[]> ,
+        SharedPreferences.OnSharedPreferenceChangeListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -151,11 +153,13 @@ public class MainActivity extends AppCompatActivity implements
         Log.d(TAG, "onCreate: registering preference changed listener");
 
         // TODO (6) Register MainActivity as a OnSharedPreferenceChangedListener in onCreate
+        /*
+         * Register MainActivity as an OnPreferenceChangedListener to receive a callback when a
+         * SharedPreference has changed. Please note that we must unregister MainActivity as an
+         * OnSharedPreferenceChanged listener in onDestroy to avoid any memory leaks.
+         */
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
-
-
-
     }
 
     /**
@@ -280,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     private void openLocationInMap() {
         // TODO (9) Use preferred location rather than a default location to display in the map
+
         String addressString = SunshinePreferences.getPreferredWeatherLocation(this);
         Uri geoLocation = Uri.parse("geo:0,0?q=" + addressString);
 
@@ -336,10 +341,16 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     // TODO (7) In onStart, if preferences have been changed, refresh the data and set the flag to false
+    /**
+     * OnStart is called when the Activity is coming into view. This happens when the Activity is
+     * first created, but also happens when the Activity is returned to from another Activity. We
+     * are going to use the fact that onStart is called when the user returns to this Activity to
+     * check if the location setting or the preferred units setting has changed. If it has changed,
+     * we are going to perform a new query.
+     */
     @Override
     protected void onStart() {
-                super.onStart();
-
+        super.onStart();
         /*
          * If the preferences for location or units have changed since the user was last in
          * MainActivity, perform another query and set the flag to false.
@@ -350,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements
          * handle converting the units from celsius to fahrenheit and back without hitting the
          * network again by keeping a copy of the data in a manageable format.
          */
-        if (PREFERENCES_HAVE_BEEN_UPDATED) {
+        if(PREFERENCES_HAVE_BEEN_UPDATED){
             Log.d(TAG, "onStart: preferences were updated");
             getSupportLoaderManager().restartLoader(FORECAST_LOADER_ID, null, this);
             PREFERENCES_HAVE_BEEN_UPDATED = false;
@@ -359,10 +370,9 @@ public class MainActivity extends AppCompatActivity implements
 
     // TODO (8) Override onDestroy and unregister MainActivity as a SharedPreferenceChangedListener
     @Override
-    protected void onStop() {
-        super.onStop();
-
-         /* Unregister MainActivity as an OnPreferenceChangedListener to avoid any memory leaks. */
+    protected void onDestroy() {
+        super.onDestroy();
+        /* Unregister MainActivity as an OnPreferenceChangedListener to avoid any memory leaks. */
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
@@ -401,6 +411,7 @@ public class MainActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+
     // TODO (5) Override onSharedPreferenceChanged to set the preferences flag to true
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -414,8 +425,7 @@ public class MainActivity extends AppCompatActivity implements
          * handle converting the units from celsius to fahrenheit and back without hitting the
          * network again by keeping a copy of the data in a manageable format.
          */
-                        PREFERENCES_HAVE_BEEN_UPDATED = true;
+        PREFERENCES_HAVE_BEEN_UPDATED = true;
     }
-
 
 }
